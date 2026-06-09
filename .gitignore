@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+coverage.xml
+
+# Secrets & keys (never commit private signing keys)
+*.key
+*.pem
+secrets/
+.env
+.env.*
+
+# Local eval artifacts (records are reproducible; don't commit local runs)
+/.verievals/
+*.runrecord.local.json
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
