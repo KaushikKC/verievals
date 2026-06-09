@@ -40,7 +40,8 @@ def canonical_dumps(value: Any) -> str:
             sort_keys=True,
             separators=(",", ":"),
         )
-    except ValueError as exc:  # allow_nan=False raises ValueError on NaN/Infinity
+    except (ValueError, TypeError) as exc:
+        # ValueError: NaN/Infinity (allow_nan=False). TypeError: non-JSON types.
         raise ValueError(f"value is not canonically encodable: {exc}") from exc
 
 
