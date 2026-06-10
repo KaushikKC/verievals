@@ -28,6 +28,7 @@ from __future__ import annotations
 import hashlib
 from collections.abc import Sequence
 from dataclasses import dataclass
+from typing import Any
 
 _LEAF_PREFIX = b"\x00"
 _NODE_PREFIX = b"\x01"
@@ -107,11 +108,11 @@ class InclusionProof:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, object]) -> InclusionProof:
+    def from_dict(cls, data: dict[str, Any]) -> InclusionProof:
         return cls(
-            leaf_index=int(data["leaf_index"]),  # type: ignore[arg-type]
-            tree_size=int(data["tree_size"]),  # type: ignore[arg-type]
-            audit_path=[str(h) for h in data["audit_path"]],  # type: ignore[union-attr]
+            leaf_index=int(data["leaf_index"]),
+            tree_size=int(data["tree_size"]),
+            audit_path=[str(h) for h in data["audit_path"]],
         )
 
 
