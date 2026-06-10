@@ -13,10 +13,10 @@ from verievals.scoring.regex_match import RegexMatchScorer
 from verievals.scoring.registry import get_scorer
 
 __all__ = [
-    "Score",
-    "Scorer",
     "ExactMatchScorer",
     "NumericScorer",
     "RegexMatchScorer",
+    "Score",
+    "Scorer",
     "get_scorer",
 ]

@@ -26,17 +26,17 @@ from verievals.crypto.signing import (
 )
 
 __all__ = [
+    "InclusionProof",
+    "SigningKey",
+    "VerifyKey",
     "canonical_dumps",
     "canonical_encode",
     "content_hash",
-    "sha256_hex",
-    "InclusionProof",
+    "generate_signing_key",
     "merkle_proof",
     "merkle_root",
-    "verify_inclusion_proof",
-    "SigningKey",
-    "VerifyKey",
-    "generate_signing_key",
+    "sha256_hex",
     "sign",
     "verify",
+    "verify_inclusion_proof",
 ]

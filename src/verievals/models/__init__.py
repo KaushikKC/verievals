@@ -22,9 +22,9 @@ from verievals.models.fixture import FixtureModel
 from verievals.models.registry import load_model
 
 __all__ = [
-    "ModelAdapter",
-    "ModelInfo",
     "EchoModel",
     "FixtureModel",
+    "ModelAdapter",
+    "ModelInfo",
     "load_model",
 ]

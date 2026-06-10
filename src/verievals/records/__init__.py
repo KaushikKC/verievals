@@ -22,8 +22,8 @@ from verievals.records.schema import (
     Envelope,
     ModelSpec,
     RunBody,
-    RunRecord,
     RunnerSpec,
+    RunRecord,
     Signature,
     TaskResult,
 )
@@ -34,10 +34,10 @@ __all__ = [
     "BenchmarkSpec",
     "Envelope",
     "ModelSpec",
+    "RecordStore",
     "RunBody",
     "RunRecord",
     "RunnerSpec",
     "Signature",
     "TaskResult",
-    "RecordStore",
 ]
