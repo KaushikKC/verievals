@@ -1,0 +1,7 @@
+id: arithmetic
+version: "1.0.0"
+scorer: numeric
+description: >
+  A small integer-arithmetic benchmark used as the reference example for
+  verifiable evals. Each task asks for a single numeric answer; the numeric
+  scorer compares the model's extracted number against the expected value.
