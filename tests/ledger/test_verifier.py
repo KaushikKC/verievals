@@ -54,24 +54,26 @@ def test_reproduction_succeeds_for_deterministic_model(
     assert result.ok
 
 
-def test_reproduction_fails_on_different_outputs(
-    record: RunRecord, benchmark: Benchmark
-) -> None:
+def test_reproduction_fails_on_different_outputs(record: RunRecord, benchmark: Benchmark) -> None:
     wrong = FixtureModel({"2+2?": "5", "3+3?": "7"})
     assert not reproduce_record(record, benchmark, wrong)
 
 
 def test_reproduction_fails_on_different_benchmark(record: RunRecord, model: FixtureModel) -> None:
     other = Benchmark(
-        id="arith", version="1.0", scorer="numeric",
+        id="arith",
+        version="1.0",
+        scorer="numeric",
         tasks=[Task(id="t1", prompt="2+2?", expected="4")],  # fewer tasks -> different hash
     )
     assert not reproduce_record(record, other, model)
 
 
-def test_reproduction_skipped_for_nondeterministic_model(record: RunRecord, benchmark: Benchmark) -> None:
+def test_reproduction_skipped_for_nondeterministic_model(
+    record: RunRecord, benchmark: Benchmark
+) -> None:
     class _FakeClient:
-        class messages:  # noqa: N801
+        class messages:
             @staticmethod
             def create(**_kwargs: object) -> object:
                 return type("R", (), {"content": []})

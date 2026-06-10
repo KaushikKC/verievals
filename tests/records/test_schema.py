@@ -25,9 +25,7 @@ def test_create_produces_valid_signature(sample_body: RunBody, signing_key: Sign
     assert record.envelope.signer == "kaushik"
 
 
-def test_signature_uses_correct_public_key(
-    sample_body: RunBody, signing_key: SigningKey
-) -> None:
+def test_signature_uses_correct_public_key(sample_body: RunBody, signing_key: SigningKey) -> None:
     record = RunRecord.create(sample_body, signing_key)
     assert record.signature.public_key == signing_key.verify_key.hex
     assert record.signature.algorithm == "ed25519"
@@ -52,7 +50,8 @@ def test_envelope_does_not_affect_content_hash(
 ) -> None:
     record = RunRecord.create(sample_body, signing_key)
     moved = dataclasses.replace(
-        record, envelope=dataclasses.replace(record.envelope, created_at="2000-01-01T00:00:00+00:00")
+        record,
+        envelope=dataclasses.replace(record.envelope, created_at="2000-01-01T00:00:00+00:00"),
     )
     # Changing the timestamp must not change the content hash or break the signature.
     assert moved.content_hash == record.content_hash

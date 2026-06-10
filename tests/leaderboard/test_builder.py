@@ -26,7 +26,10 @@ def benchmark() -> Benchmark:
         id="arith",
         version="1.0",
         scorer="numeric",
-        tasks=[Task(id="t1", prompt="2+2?", expected="4"), Task(id="t2", prompt="3+3?", expected="6")],
+        tasks=[
+            Task(id="t1", prompt="2+2?", expected="4"),
+            Task(id="t2", prompt="3+3?", expected="6"),
+        ],
     )
 
 
@@ -52,7 +55,9 @@ def test_entries_sorted_by_accuracy(tmp_path: Path, benchmark: Benchmark, key: S
     assert board.root == ledger.root()
 
 
-def test_excludes_records_not_in_ledger(tmp_path: Path, benchmark: Benchmark, key: SigningKey) -> None:
+def test_excludes_records_not_in_ledger(
+    tmp_path: Path, benchmark: Benchmark, key: SigningKey
+) -> None:
     store = RecordStore(tmp_path / "records")
     ledger = MerkleLog(tmp_path / "ledger")
     rec = _run(benchmark, key, "good", {"2+2?": "4", "3+3?": "6"})
@@ -62,8 +67,18 @@ def test_excludes_records_not_in_ledger(tmp_path: Path, benchmark: Benchmark, ke
 
 
 def test_benchmark_filter(tmp_path: Path, key: SigningKey) -> None:
-    b1 = Benchmark(id="arith", version="1.0", scorer="numeric", tasks=[Task(id="t", prompt="2+2?", expected="4")])
-    b2 = Benchmark(id="other", version="1.0", scorer="numeric", tasks=[Task(id="t", prompt="2+2?", expected="4")])
+    b1 = Benchmark(
+        id="arith",
+        version="1.0",
+        scorer="numeric",
+        tasks=[Task(id="t", prompt="2+2?", expected="4")],
+    )
+    b2 = Benchmark(
+        id="other",
+        version="1.0",
+        scorer="numeric",
+        tasks=[Task(id="t", prompt="2+2?", expected="4")],
+    )
     store = RecordStore(tmp_path / "records")
     ledger = MerkleLog(tmp_path / "ledger")
     for b in (b1, b2):
@@ -75,7 +90,9 @@ def test_benchmark_filter(tmp_path: Path, key: SigningKey) -> None:
     assert board.entries[0].benchmark_id == "arith"
 
 
-def test_render_markdown_includes_root(tmp_path: Path, benchmark: Benchmark, key: SigningKey) -> None:
+def test_render_markdown_includes_root(
+    tmp_path: Path, benchmark: Benchmark, key: SigningKey
+) -> None:
     store = RecordStore(tmp_path / "records")
     ledger = MerkleLog(tmp_path / "ledger")
     rec = _run(benchmark, key, "good", {"2+2?": "4", "3+3?": "6"})
