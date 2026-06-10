@@ -1,0 +1,15 @@
+{"id": "add-01", "prompt": "What is 7 + 5? Reply with only the number.", "expected": "12", "metadata": {"op": "add"}}
+{"id": "add-02", "prompt": "What is 28 + 17? Reply with only the number.", "expected": "45", "metadata": {"op": "add"}}
+{"id": "sub-01", "prompt": "What is 31 - 19? Reply with only the number.", "expected": "12", "metadata": {"op": "sub"}}
+{"id": "sub-02", "prompt": "What is 100 - 64? Reply with only the number.", "expected": "36", "metadata": {"op": "sub"}}
+{"id": "mul-01", "prompt": "What is 6 * 7? Reply with only the number.", "expected": "42", "metadata": {"op": "mul"}}
+{"id": "mul-02", "prompt": "What is 12 * 12? Reply with only the number.", "expected": "144", "metadata": {"op": "mul"}}
+{"id": "div-01", "prompt": "What is 81 / 9? Reply with only the number.", "expected": "9", "metadata": {"op": "div"}}
+{"id": "div-02", "prompt": "What is 144 / 12? Reply with only the number.", "expected": "12", "metadata": {"op": "div"}}
+{"id": "mix-01", "prompt": "What is 3 * 4 + 2? Reply with only the number.", "expected": "14", "metadata": {"op": "mix"}}
+{"id": "mix-02", "prompt": "What is (10 - 3) * 2? Reply with only the number.", "expected": "14", "metadata": {"op": "mix"}}
+{"id": "mix-03", "prompt": "What is 50 / 2 - 5? Reply with only the number.", "expected": "20", "metadata": {"op": "mix"}}
+{"id": "pow-01", "prompt": "What is 2 to the power of 5? Reply with only the number.", "expected": "32", "metadata": {"op": "pow"}}
+{"id": "pow-02", "prompt": "What is 10 squared? Reply with only the number.", "expected": "100", "metadata": {"op": "pow"}}
+{"id": "neg-01", "prompt": "What is 5 - 12? Reply with only the number.", "expected": "-7", "metadata": {"op": "sub"}}
+{"id": "big-01", "prompt": "What is 123 + 456? Reply with only the number.", "expected": "579", "metadata": {"op": "add"}}
