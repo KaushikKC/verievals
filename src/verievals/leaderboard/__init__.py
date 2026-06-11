@@ -10,5 +10,19 @@ from verievals.leaderboard.builder import (
     LeaderboardEntry,
     build_leaderboard,
 )
+from verievals.leaderboard.trust import (
+    TrustEntry,
+    TrustLeaderboard,
+    TrustTier,
+    build_trust_leaderboard,
+)
 
-__all__ = ["Leaderboard", "LeaderboardEntry", "build_leaderboard"]
+__all__ = [
+    "Leaderboard",
+    "LeaderboardEntry",
+    "TrustEntry",
+    "TrustLeaderboard",
+    "TrustTier",
+    "build_leaderboard",
+    "build_trust_leaderboard",
+]
