@@ -18,6 +18,7 @@ from collections.abc import Sequence
 from verievals.benchmarks.loader import load_benchmark
 from verievals.cli import keys
 from verievals.leaderboard.builder import build_leaderboard
+from verievals.leaderboard.trust import build_trust_leaderboard
 from verievals.ledger.merkle_log import MerkleLog
 from verievals.ledger.verifier import verify_record
 from verievals.models.registry import load_model
@@ -96,13 +97,23 @@ def _cmd_verify(args: argparse.Namespace) -> int:
 def _cmd_leaderboard(args: argparse.Namespace) -> int:
     store = RecordStore(args.records)
     ledger = MerkleLog(args.ledger)
-    board = build_leaderboard(store, ledger, benchmark_id=args.benchmark)
-    markdown = board.render_markdown()
+    if args.trust:
+        reproducers = {}
+        if args.reproduce_benchmark and args.reproduce_model:
+            bench = load_benchmark(args.reproduce_benchmark)
+            reproducers[bench.id] = (bench, load_model(args.reproduce_model))
+        board: object = build_trust_leaderboard(
+            store, ledger, reproducers=reproducers, benchmark_id=args.benchmark
+        )
+    else:
+        board = build_leaderboard(store, ledger, benchmark_id=args.benchmark)
+    markdown = board.render_markdown()  # type: ignore[attr-defined]
+    entry_count = len(board.entries)  # type: ignore[attr-defined]
     if args.out:
         from pathlib import Path
 
         Path(args.out).write_text(markdown, encoding="utf-8")
-        print(f"Wrote leaderboard ({len(board.entries)} entries) to {args.out}")
+        print(f"Wrote leaderboard ({entry_count} entries) to {args.out}")
     else:
         print(markdown, end="")
     return 0
@@ -150,6 +161,21 @@ def build_parser() -> argparse.ArgumentParser:
     p_board.add_argument("--ledger", required=True, help="ledger directory")
     p_board.add_argument("--benchmark", default=None, help="filter to a benchmark id")
     p_board.add_argument("--out", default=None, help="write markdown to a file instead of stdout")
+    p_board.add_argument(
+        "--trust",
+        action="store_true",
+        help="render the trust-scored board (reproduced/verified/signed/self-reported)",
+    )
+    p_board.add_argument(
+        "--reproduce-benchmark",
+        default=None,
+        help="benchmark dir to enable the 'reproduced' trust tier (with --trust)",
+    )
+    p_board.add_argument(
+        "--reproduce-model",
+        default=None,
+        help="model spec to enable the 'reproduced' trust tier (with --trust)",
+    )
     p_board.set_defaults(func=_cmd_leaderboard)
 
     return parser
