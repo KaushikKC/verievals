@@ -1,0 +1,20 @@
+{
+  "name": "arithmetic-solver",
+  "responses": {
+    "What is (10 - 3) * 2? Reply with only the number.": "14",
+    "What is 10 squared? Reply with only the number.": "100",
+    "What is 100 - 64? Reply with only the number.": "36",
+    "What is 12 * 12? Reply with only the number.": "144",
+    "What is 123 + 456? Reply with only the number.": "579",
+    "What is 144 / 12? Reply with only the number.": "12",
+    "What is 2 to the power of 5? Reply with only the number.": "32",
+    "What is 28 + 17? Reply with only the number.": "45",
+    "What is 3 * 4 + 2? Reply with only the number.": "14",
+    "What is 31 - 19? Reply with only the number.": "12",
+    "What is 5 - 12? Reply with only the number.": "-7",
+    "What is 50 / 2 - 5? Reply with only the number.": "20",
+    "What is 6 * 7? Reply with only the number.": "42",
+    "What is 7 + 5? Reply with only the number.": "12",
+    "What is 81 / 9? Reply with only the number.": "9"
+  }
+}
