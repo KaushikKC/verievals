@@ -34,5 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entries by verification strength (reproduced / verified / signed /
   self-reported), making the gap between cryptographically-backed and
   self-reported numbers explicit.
+- GSM8K MVP for locally-run open models: an `OllamaAdapter` (`ollama:<tag>`,
+  stdlib-only), a `gsm8k` scorer (final-number extraction), a `benchmarks/gsm8k`
+  sample, a captured gemma3:1b fixture for offline reproduction, and the
+  `examples/run_gsm8k.py` demo.
 
 [Unreleased]: https://github.com/kccreations1704/verifiable-evals/commits/main
