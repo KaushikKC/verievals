@@ -76,10 +76,18 @@ reproducibility of outputs and scores.
 
 ## Documentation
 
-- [`docs/architecture.md`](docs/architecture.md) — system design
+- [`docs/architecture.md`](docs/architecture.md) — system design and module map
 - [`docs/record-format.md`](docs/record-format.md) — the `RunRecord` schema
 - [`docs/verification.md`](docs/verification.md) — the verification protocol
+- [`docs/threat-model.md`](docs/threat-model.md) — goals and explicit non-goals
+- [`docs/cli.md`](docs/cli.md) — command-line reference
+- [`examples/`](examples/) — a fully offline end-to-end demo
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to contribute
+
+## Bundled benchmarks
+
+- `benchmarks/arithmetic` — integer arithmetic, numeric scorer (15 tasks)
+- `benchmarks/capitals` — world capitals, exact-match scorer (10 tasks)
 
 ## License
 
