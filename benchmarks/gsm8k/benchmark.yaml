@@ -1,0 +1,9 @@
+id: gsm8k
+version: "sample-1.0.0"
+scorer: gsm8k
+description: >
+  A small illustrative sample of GSM8K-style grade-school math word problems
+  (12 items) with integer answers, scored by the `gsm8k` scorer (final-number
+  extraction). This is a runnable MVP subset, NOT the official GSM8K test split.
+  To evaluate on the real benchmark, replace tasks.jsonl with the official GSM8K
+  problems (one JSON object per line: id, prompt, expected) and bump version.
