@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from verievals.scoring.base import Scorer
 from verievals.scoring.exact_match import ExactMatchScorer
+from verievals.scoring.gsm8k import GSM8KScorer
 from verievals.scoring.numeric import NumericScorer
 from verievals.scoring.regex_match import RegexMatchScorer
 
@@ -11,6 +12,7 @@ _SCORERS: dict[str, type[Scorer]] = {
     ExactMatchScorer.id: ExactMatchScorer,
     RegexMatchScorer.id: RegexMatchScorer,
     NumericScorer.id: NumericScorer,
+    GSM8KScorer.id: GSM8KScorer,
 }
 
 
