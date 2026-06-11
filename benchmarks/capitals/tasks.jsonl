@@ -1,0 +1,10 @@
+{"id": "cap-france", "prompt": "What is the capital of France? Reply with only the city name.", "expected": "Paris", "metadata": {"continent": "Europe"}}
+{"id": "cap-japan", "prompt": "What is the capital of Japan? Reply with only the city name.", "expected": "Tokyo", "metadata": {"continent": "Asia"}}
+{"id": "cap-egypt", "prompt": "What is the capital of Egypt? Reply with only the city name.", "expected": "Cairo", "metadata": {"continent": "Africa"}}
+{"id": "cap-brazil", "prompt": "What is the capital of Brazil? Reply with only the city name.", "expected": "Brasilia", "metadata": {"continent": "South America"}}
+{"id": "cap-canada", "prompt": "What is the capital of Canada? Reply with only the city name.", "expected": "Ottawa", "metadata": {"continent": "North America"}}
+{"id": "cap-australia", "prompt": "What is the capital of Australia? Reply with only the city name.", "expected": "Canberra", "metadata": {"continent": "Oceania"}}
+{"id": "cap-kenya", "prompt": "What is the capital of Kenya? Reply with only the city name.", "expected": "Nairobi", "metadata": {"continent": "Africa"}}
+{"id": "cap-norway", "prompt": "What is the capital of Norway? Reply with only the city name.", "expected": "Oslo", "metadata": {"continent": "Europe"}}
+{"id": "cap-india", "prompt": "What is the capital of India? Reply with only the city name.", "expected": "New Delhi", "metadata": {"continent": "Asia"}}
+{"id": "cap-peru", "prompt": "What is the capital of Peru? Reply with only the city name.", "expected": "Lima", "metadata": {"continent": "South America"}}
