@@ -1,0 +1,7 @@
+id: capitals
+version: "1.0.0"
+scorer: exact_match
+description: >
+  A small world-capitals benchmark demonstrating non-numeric, exact-match
+  scoring. The exact-match scorer normalizes whitespace and case, so "Paris"
+  and "  paris " both match the expected "Paris".
