@@ -4,6 +4,7 @@ Spec grammar::
 
     echo                          -> deterministic echo model
     fixture:<path>                -> deterministic fixture model from a JSON file
+    ollama[:<model>]              -> locally-served model via Ollama
     anthropic[:<model>]           -> Claude via the Anthropic API
     openai[:<model>]              -> OpenAI via the Chat Completions API
 
@@ -30,6 +31,11 @@ def load_model(spec: str) -> ModelAdapter:
         if not rest:
             raise ValueError("fixture model requires a path: 'fixture:<path>'")
         return FixtureModel.from_file(rest)
+
+    if provider == "ollama":
+        from verievals.models.ollama_adapter import DEFAULT_MODEL, OllamaAdapter
+
+        return OllamaAdapter(model=rest or DEFAULT_MODEL)
 
     if provider == "anthropic":
         from verievals.models.anthropic_adapter import DEFAULT_MODEL, AnthropicAdapter
