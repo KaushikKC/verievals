@@ -20,5 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ledger` module: append-only Merkle log and re-run verifier.
 - `leaderboard` module: verifiable leaderboard builder.
 - `cli`: `keygen`, `run`, `verify`, `ledger`, and `leaderboard` commands.
+- Bundled benchmarks: `arithmetic` (numeric scoring) and `capitals`
+  (exact-match scoring).
+- End-to-end example (`examples/run_arithmetic.py`) and a deterministic solver
+  fixture.
+- Documentation: architecture, record format, verification protocol, threat
+  model, and CLI reference.
+- PEP 561 `py.typed` marker so downstream users get the shipped type hints.
 
 [Unreleased]: https://github.com/kccreations1704/verifiable-evals/commits/main
