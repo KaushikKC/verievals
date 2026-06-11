@@ -27,5 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation: architecture, record format, verification protocol, threat
   model, and CLI reference.
 - PEP 561 `py.typed` marker so downstream users get the shipped type hints.
+- `sdk` module: `EvalRecorder` context manager and `@logged_eval` decorator to
+  emit signed records from inside existing eval loops (byte-identical to the
+  runner's output for the same data).
+- Trust-scored leaderboard (`leaderboard.trust`, `leaderboard --trust`): ranks
+  entries by verification strength (reproduced / verified / signed /
+  self-reported), making the gap between cryptographically-backed and
+  self-reported numbers explicit.
 
 [Unreleased]: https://github.com/kccreations1704/verifiable-evals/commits/main
