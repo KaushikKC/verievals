@@ -90,6 +90,18 @@ reproducibility of outputs and scores.
 
 - `benchmarks/arithmetic` — integer arithmetic, numeric scorer (15 tasks)
 - `benchmarks/capitals` — world capitals, exact-match scorer (10 tasks)
+- `benchmarks/gsm8k` — GSM8K-style grade-school math sample, `gsm8k` scorer (12 tasks)
+
+## Run a local open model (Ollama)
+
+```bash
+ollama pull gemma3:1b
+verievals run --benchmark benchmarks/gsm8k --model ollama:gemma3:1b \
+    --key ./keys/runner.key --out ./records --signer me
+```
+
+See [`docs/gsm8k-mvp.md`](docs/gsm8k-mvp.md). Swap in `ollama:llama3:8b` for the
+larger model. A captured fixture makes the run reproducible offline.
 
 ## License
 
