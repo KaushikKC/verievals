@@ -79,6 +79,8 @@ reproducibility of outputs and scores.
 - [`docs/architecture.md`](docs/architecture.md) — system design and module map
 - [`docs/record-format.md`](docs/record-format.md) — the `RunRecord` schema
 - [`docs/verification.md`](docs/verification.md) — the verification protocol
+- [`docs/sdk.md`](docs/sdk.md) — the logging SDK (`EvalRecorder` / `@logged_eval`)
+- [`docs/trust-score.md`](docs/trust-score.md) — the trust-scored leaderboard
 - [`docs/threat-model.md`](docs/threat-model.md) — goals and explicit non-goals
 - [`docs/cli.md`](docs/cli.md) — command-line reference
 - [`examples/`](examples/) — a fully offline end-to-end demo
