@@ -8,12 +8,14 @@ to resolve a scorer id (e.g. ``"exact_match"``, ``"numeric"``).
 
 from verievals.scoring.base import Score, Scorer
 from verievals.scoring.exact_match import ExactMatchScorer
+from verievals.scoring.gsm8k import GSM8KScorer
 from verievals.scoring.numeric import NumericScorer
 from verievals.scoring.regex_match import RegexMatchScorer
 from verievals.scoring.registry import get_scorer
 
 __all__ = [
     "ExactMatchScorer",
+    "GSM8KScorer",
     "NumericScorer",
     "RegexMatchScorer",
     "Score",
