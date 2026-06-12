@@ -69,5 +69,23 @@ from any Python environment — no clone, no `-e .`, no venv-in-this-repo requir
 3. `make build` → `twine check dist/*` → `twine upload dist/*`.
 4. Tag the release: `git tag v0.1.0 && git push --tags`.
 
-> Tip: once this is comfortable, automate steps 2–5 with a GitHub Actions
-> "publish on tag" workflow using a PyPI **trusted publisher** (no token needed).
+## 7. Automated publishing on tag (recommended)
+
+This repo ships `.github/workflows/publish.yml`, which builds and publishes to
+PyPI automatically when you push a version tag — no token or manual `twine`:
+
+```bash
+# bump version in src/verievals/version.py and pyproject.toml, commit, then:
+git tag v0.1.1 && git push --tags
+```
+
+**One-time PyPI setup (Trusted Publishing via OIDC, no secret to store):**
+
+1. Go to the project on PyPI → **Manage → Publishing**.
+2. Add a **GitHub Actions** trusted publisher:
+   - Owner: `KaushikKC`  ·  Repository: `verievals`
+   - Workflow filename: `publish.yml`  ·  Environment: `pypi`
+3. Create a GitHub **Environment** named `pypi` (repo Settings → Environments).
+
+After that, every `v*` tag push triggers a verified build + publish.
+
