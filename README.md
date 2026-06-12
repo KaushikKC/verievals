@@ -8,7 +8,7 @@
 [![CI](https://github.com/KaushikKC/verievals/actions/workflows/ci.yml/badge.svg)](https://github.com/KaushikKC/verievals/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-204_passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-210_passing-brightgreen.svg)](tests/)
 [![Coverage](https://img.shields.io/badge/coverage-97%25-brightgreen.svg)](pyproject.toml)
 [![Typed](https://img.shields.io/badge/typed-mypy_strict-blue.svg)](pyproject.toml)
 
@@ -383,6 +383,7 @@ produce a misleading signed artifact. Details: [`docs/sdk.md`](docs/sdk.md).
 | `arithmetic` | `numeric` | 15 | numeric answer extraction |
 | `capitals` | `exact_match` | 10 | normalized non-numeric matching |
 | `gsm8k` | `gsm8k` | 12 | chain-of-thought, final-number extraction (sample subset) |
+| `gsm8k-full` | `gsm8k` | 1,319 | the **official GSM8K test split** (MIT; via `scripts/fetch_gsm8k.py`) |
 
 **Scorers** (deterministic, resolved by id so they are pinned in the record):
 `exact_match` (case/whitespace-normalized), `regex_match`, `numeric` (first number,
@@ -472,7 +473,7 @@ verifiable-evals/
 ├── docs/                       # architecture, record-format, verification, sdk,
 │                               #   trust-score, gsm8k-mvp, integration, github-action,
 │                               #   releasing, threat-model, cli
-├── tests/                      # mirrors the package; 204 tests, 97% coverage
+├── tests/                      # mirrors the package; 210 tests, 97% coverage
 ├── .github/workflows/ci.yml    # lint + mypy + pytest matrix (py3.10–3.12)
 ├── pyproject.toml  Makefile  CHANGELOG.md  CONTRIBUTING.md  LICENSE
 ```
@@ -499,7 +500,7 @@ step-by-step in [`docs/RELEASING.md`](docs/RELEASING.md).
 
 - **Stage:** working v0.1.0 — the cryptographic core, runner, ledger, verifier,
   SDK, trust leaderboard, CLI, and the GSM8K local-model MVP are complete and tested.
-- **Tests:** 204 passing · **coverage:** 97% · `mypy` and `ruff` clean · wheel builds.
+- **Tests:** 210 passing · **coverage:** 97% · `mypy` and `ruff` clean · wheel builds.
 - **Three foundational milestones delivered:**
   1. **MVP for a single open-source model** — `gemma3:1b` on a GSM8K sample via
      Ollama, with a fixture for offline reproduction (`llama3:8b` is one flag away).
@@ -511,10 +512,11 @@ step-by-step in [`docs/RELEASING.md`](docs/RELEASING.md).
 ## Roadmap
 
 - [x] **Published to PyPI** — `pip install verievals`.
+- [x] **Auto-publish on tag** — a release workflow publishes to PyPI on `v*` tags.
 - [x] **GitHub Action** to verify eval records in CI.
-- [ ] Wire the **official full GSM8K split** (1,319 problems) behind the existing loader.
+- [x] **Official full GSM8K split** (1,319 problems) as the `gsm8k-full` benchmark.
+- [x] **Hosted Trust Score website** — a static board deployed to GitHub Pages.
 - [ ] A `transformers`/HuggingFace adapter for offline weights without a server.
-- [ ] A hosted, continuously-updated **Trust Score website** from a public ledger.
 - [ ] Optional **L2 anchoring** of the Merkle root for external timestamping.
 - [ ] Witness/co-signing and multi-party attestation of records.
 
