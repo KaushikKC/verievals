@@ -1,0 +1,11 @@
+This benchmark contains the GSM8K test split.
+
+GSM8K is from "Training Verifiers to Solve Math Word Problems"
+(Cobbe et al., 2021), distributed at:
+    https://github.com/openai/grade-school-math
+
+GSM8K is licensed under the MIT License. Copyright (c) OpenAI.
+
+The data here was converted to the verievals benchmark format (id / prompt /
+expected) by scripts/fetch_gsm8k.py. The questions are reproduced verbatim; the
+"expected" field is the final number after the original "####" answer marker.
