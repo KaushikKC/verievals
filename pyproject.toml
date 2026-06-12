@@ -45,6 +45,8 @@ dev = [
     "ruff>=0.6",
     "mypy>=1.11",
     "types-PyYAML>=6.0",
+    "build>=1.2",
+    "twine>=5.0",
 ]
 all = ["verievals[anthropic,openai,dev]"]
 
@@ -52,9 +54,9 @@ all = ["verievals[anthropic,openai,dev]"]
 verievals = "verievals.cli.main:main"
 
 [project.urls]
-Homepage = "https://github.com/kccreations1704/verifiable-evals"
-Repository = "https://github.com/kccreations1704/verifiable-evals"
-Issues = "https://github.com/kccreations1704/verifiable-evals/issues"
+Homepage = "https://github.com/KaushikKC/verievals"
+Repository = "https://github.com/KaushikKC/verievals"
+Issues = "https://github.com/KaushikKC/verievals/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/verievals"]
