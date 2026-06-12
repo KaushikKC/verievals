@@ -1,0 +1,40 @@
+name: verify-demo
+
+# Dogfoods the reusable "Verify eval records" action: produce a signed record,
+# append it to a ledger, then verify it with the action (which installs verievals
+# from PyPI). Proves the published package + the action work end to end.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install verievals (from source for this repo)
+        run: pip install -e .
+
+      - name: Produce a signed record and a ledger
+        run: |
+          verievals keygen --out keys/runner
+          verievals run --benchmark benchmarks/arithmetic --model echo \
+            --key keys/runner.key --out records --signer ci
+          for f in records/*.json; do
+            verievals ledger --ledger ledger append "$f"
+          done
+
+      - name: Verify with the reusable action
+        uses: ./.github/actions/verify
+        with:
+          record: "records/*.json"
+          ledger: "ledger"
+          benchmark: "benchmarks/arithmetic"
+          model: "echo"
