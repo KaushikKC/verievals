@@ -4,7 +4,8 @@
 > outputs, scores, seed, and config — appended to a public Merkle log. Anyone can
 > re-run and *cryptographically verify* any leaderboard entry.**
 
-[![CI](https://github.com/kccreations1704/verifiable-evals/actions/workflows/ci.yml/badge.svg)](https://github.com/kccreations1704/verifiable-evals/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/verievals.svg)](https://pypi.org/project/verievals/)
+[![CI](https://github.com/KaushikKC/verievals/actions/workflows/ci.yml/badge.svg)](https://github.com/KaushikKC/verievals/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 [![Tests](https://img.shields.io/badge/tests-204_passing-brightgreen.svg)](tests/)
@@ -30,6 +31,7 @@
 - [Models, benchmarks, and scorers](#models-benchmarks-and-scorers)
 - [GSM8K MVP: a locally-run open model, end to end](#gsm8k-mvp-a-locally-run-open-model-end-to-end)
 - [Command-line interface](#command-line-interface)
+- [Verify in CI (GitHub Action)](#verify-in-ci-github-action)
 - [Threat model](#threat-model)
 - [Project layout](#project-layout)
 - [Development](#development)
@@ -110,12 +112,14 @@ pip install "verievals[openai]"      # OpenAI adapter
 pip install "verievals[dev]"         # tests, lint, types, build/publish tools
 ```
 
-From source (for contributing, or before the PyPI release):
+From source (for development or contributing):
 
 ```bash
 git clone https://github.com/KaushikKC/verievals && cd verievals
 pip install -e ".[dev]"
 ```
+
+> Published on PyPI: <https://pypi.org/project/verievals/>.
 
 ## Quickstart
 
@@ -425,6 +429,24 @@ Details: [`docs/gsm8k-mvp.md`](docs/gsm8k-mvp.md).
 
 Full reference: [`docs/cli.md`](docs/cli.md).
 
+## Verify in CI (GitHub Action)
+
+A reusable composite action fails a CI job if an eval record doesn't verify — so
+you can gate merges and releases on cryptographically-verified results:
+
+```yaml
+- uses: KaushikKC/verievals/.github/actions/verify@v0.1.0
+  with:
+    record: "records/*.json"      # integrity + signature always checked
+    ledger: "ledger"              # also check Merkle inclusion
+    benchmark: "benchmarks/gsm8k" # also check reproduction
+    model: "echo"                 #   (with a deterministic model)
+```
+
+It installs `verievals` from PyPI and runs `verievals verify` on each record.
+Full reference: [`docs/github-action.md`](docs/github-action.md). This repo
+dogfoods it in [`.github/workflows/verify-demo.yml`](.github/workflows/verify-demo.yml).
+
 ## Threat model
 
 **Defends against:** result tampering (any edit changes the content hash and breaks
@@ -448,8 +470,8 @@ verifiable-evals/
 ├── benchmarks/                 # bundled benchmark data (arithmetic, capitals, gsm8k)
 ├── examples/                   # end-to-end demos + captured fixtures
 ├── docs/                       # architecture, record-format, verification, sdk,
-│                               #   trust-score, gsm8k-mvp, integration, releasing,
-│                               #   threat-model, cli
+│                               #   trust-score, gsm8k-mvp, integration, github-action,
+│                               #   releasing, threat-model, cli
 ├── tests/                      # mirrors the package; 204 tests, 97% coverage
 ├── .github/workflows/ci.yml    # lint + mypy + pytest matrix (py3.10–3.12)
 ├── pyproject.toml  Makefile  CHANGELOG.md  CONTRIBUTING.md  LICENSE
@@ -488,11 +510,13 @@ step-by-step in [`docs/RELEASING.md`](docs/RELEASING.md).
 
 ## Roadmap
 
-- Wire the **official full GSM8K split** (1,319 problems) behind the existing loader.
-- A `transformers`/HuggingFace adapter for offline weights without a server.
-- Publish a hosted, continuously-updated Trust Score board from a public ledger.
-- Optional **L2 anchoring** of the Merkle root for external timestamping.
-- Witness/co-signing and multi-party attestation of records.
+- [x] **Published to PyPI** — `pip install verievals`.
+- [x] **GitHub Action** to verify eval records in CI.
+- [ ] Wire the **official full GSM8K split** (1,319 problems) behind the existing loader.
+- [ ] A `transformers`/HuggingFace adapter for offline weights without a server.
+- [ ] A hosted, continuously-updated **Trust Score website** from a public ledger.
+- [ ] Optional **L2 anchoring** of the Merkle root for external timestamping.
+- [ ] Witness/co-signing and multi-party attestation of records.
 
 ## License
 
