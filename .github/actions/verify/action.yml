@@ -1,0 +1,79 @@
+name: "Verify eval records"
+description: >
+  Cryptographically verify verievals run records in CI. Fails the job if any
+  record does not verify (integrity, signature, and — when a ledger / benchmark
+  / model are given — Merkle inclusion and reproduction).
+author: "Kaushik"
+branding:
+  icon: "shield"
+  color: "green"
+
+inputs:
+  record:
+    description: "Path or glob to the record JSON file(s) to verify (e.g. 'records/*.json')."
+    required: true
+  ledger:
+    description: "Ledger directory — enables the Merkle inclusion check."
+    required: false
+    default: ""
+  benchmark:
+    description: "Benchmark directory — enables reproduction (deterministic models)."
+    required: false
+    default: ""
+  model:
+    description: "Model spec (e.g. echo) — enables reproduction together with 'benchmark'."
+    required: false
+    default: ""
+  version:
+    description: "verievals version to install from PyPI (default: latest)."
+    required: false
+    default: ""
+  python-version:
+    description: "Python version to use."
+    required: false
+    default: "3.12"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install verievals
+      shell: bash
+      env:
+        VERIEVALS_VERSION: ${{ inputs.version }}
+      run: |
+        if [ -n "$VERIEVALS_VERSION" ]; then
+          pip install "verievals==$VERIEVALS_VERSION"
+        else
+          pip install verievals
+        fi
+
+    - name: Verify records
+      shell: bash
+      env:
+        RECORD: ${{ inputs.record }}
+        LEDGER: ${{ inputs.ledger }}
+        BENCHMARK: ${{ inputs.benchmark }}
+        MODEL: ${{ inputs.model }}
+      run: |
+        set -euo pipefail
+        args=()
+        [ -n "$LEDGER" ]    && args+=(--ledger "$LEDGER")
+        [ -n "$BENCHMARK" ] && args+=(--benchmark "$BENCHMARK")
+        [ -n "$MODEL" ]     && args+=(--model "$MODEL")
+        shopt -s nullglob
+        found=0
+        for f in $RECORD; do
+          found=1
+          echo "::group::verify $f"
+          verievals verify "$f" "${args[@]}"
+          echo "::endgroup::"
+        done
+        if [ "$found" -eq 0 ]; then
+          echo "::error::no records matched '$RECORD'"
+          exit 1
+        fi
