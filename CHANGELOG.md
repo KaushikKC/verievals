@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Integration guide (`docs/INTEGRATION.md`) and a runnable custom-model template
+  (`examples/custom_model.py`) showing how to evaluate your own model in ~15 lines.
+- PyPI release guide (`docs/RELEASING.md`) and `build`/`twine` dev dependencies;
+  the package passes `twine check` and is ready to publish as `pip install verievals`.
+- README: installation section and an "Integrate your own model & benchmark" section.
 - Initial project scaffolding: packaging, license, contributor guide, CI.
 - `crypto` module: canonical JSON, SHA-256 content addressing, Merkle tree with
   inclusion proofs, Ed25519 signing/verification.
