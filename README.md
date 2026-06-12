@@ -7,7 +7,7 @@
 [![CI](https://github.com/kccreations1704/verifiable-evals/actions/workflows/ci.yml/badge.svg)](https://github.com/kccreations1704/verifiable-evals/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-202_passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-204_passing-brightgreen.svg)](tests/)
 [![Coverage](https://img.shields.io/badge/coverage-97%25-brightgreen.svg)](pyproject.toml)
 [![Typed](https://img.shields.io/badge/typed-mypy_strict-blue.svg)](pyproject.toml)
 
@@ -17,7 +17,9 @@
 
 - [The problem](#the-problem)
 - [The idea: the evidence is the artifact](#the-idea-the-evidence-is-the-artifact)
+- [Installation](#installation)
 - [Quickstart](#quickstart)
+- [Integrate your own model & benchmark](#integrate-your-own-model--benchmark)
 - [Architecture](#architecture)
 - [The `RunRecord`](#the-runrecord)
 - [Cryptographic design](#cryptographic-design)
@@ -94,11 +96,30 @@ prompts + config + seed ──▶ model ──▶ outputs ──▶ scorer ─�
                           published root ◀── inclusion proof ──▶ anyone verifies
 ```
 
+## Installation
+
+```bash
+pip install verievals
+```
+
+Optional model backends and dev tooling:
+
+```bash
+pip install "verievals[anthropic]"   # Claude adapter
+pip install "verievals[openai]"      # OpenAI adapter
+pip install "verievals[dev]"         # tests, lint, types, build/publish tools
+```
+
+From source (for contributing, or before the PyPI release):
+
+```bash
+git clone https://github.com/KaushikKC/verievals && cd verievals
+pip install -e ".[dev]"
+```
+
 ## Quickstart
 
 ```bash
-pip install -e ".[dev]"
-
 # 1. Generate a signing keypair (the private key stays local, chmod 0600)
 verievals keygen --out ./keys/runner
 
@@ -127,6 +148,49 @@ A fully offline, deterministic walkthrough of the whole pipeline:
 python examples/run_arithmetic.py     # run → sign → ledger → verify → leaderboard
 python examples/run_gsm8k.py          # the local-model MVP, replayed from a fixture
 ```
+
+## Integrate your own model & benchmark
+
+You **install `verievals` as a dependency** in your own project — you don't fork
+or edit its source. Then you plug in two things: your model and your benchmark.
+
+**Your model** — three options, easiest first:
+
+- **Already supported** (no code): a spec string — `ollama:llama3:8b`,
+  `anthropic:claude-opus-4-8`, `openai:gpt-4o`.
+- **Your own / proprietary model** — wrap it in a ~15-line adapter:
+
+  ```python
+  from verievals.models.base import ModelAdapter, ModelInfo
+
+  class MyModelAdapter(ModelAdapter):
+      def generate(self, prompt: str) -> str:
+          return my_model(prompt)          # your transformers pipeline / API call
+      def info(self) -> ModelInfo:
+          return ModelInfo("my-org", "my-model", "v1.0", {})
+  ```
+
+- **You already have an eval loop** — use the SDK (`EvalRecorder`) and just
+  `rec.log(...)` inside your existing loop.
+
+**Your benchmark** — a folder with `benchmark.yaml` (`id`, `version`, `scorer`)
+and `tasks.jsonl` (`{id, prompt, expected}` per line). Drop in the full GSM8K
+split, or your own tasks, in the same format.
+
+Then run it to get a signed, verifiable record:
+
+```python
+from verievals.benchmarks.loader import load_benchmark
+from verievals.crypto.signing import generate_signing_key
+from verievals.runner.engine import run_eval
+
+record = run_eval(load_benchmark("./my-benchmark"), MyModelAdapter(),
+                  signing_key=generate_signing_key(), signer="my-org")
+print(record.body.aggregate.metrics["accuracy"])
+```
+
+**Full walkthrough:** [`docs/INTEGRATION.md`](docs/INTEGRATION.md) ·
+**runnable template:** [`examples/custom_model.py`](examples/custom_model.py).
 
 ## Architecture
 
@@ -383,9 +447,10 @@ verifiable-evals/
 ├── src/verievals/              # the package (9 modules, see Architecture)
 ├── benchmarks/                 # bundled benchmark data (arithmetic, capitals, gsm8k)
 ├── examples/                   # end-to-end demos + captured fixtures
-├── docs/                       # architecture, record-format, verification,
-│                               #   sdk, trust-score, gsm8k-mvp, threat-model, cli
-├── tests/                      # mirrors the package; 202 tests, 97% coverage
+├── docs/                       # architecture, record-format, verification, sdk,
+│                               #   trust-score, gsm8k-mvp, integration, releasing,
+│                               #   threat-model, cli
+├── tests/                      # mirrors the package; 204 tests, 97% coverage
 ├── .github/workflows/ci.yml    # lint + mypy + pytest matrix (py3.10–3.12)
 ├── pyproject.toml  Makefile  CHANGELOG.md  CONTRIBUTING.md  LICENSE
 ```
@@ -405,11 +470,14 @@ Standards enforced in CI (Python 3.10/3.11/3.12 matrix): `ruff` lint + format,
 `mypy` with `disallow_untyped_defs`, and the full test suite. The package ships a
 PEP 561 `py.typed` marker.
 
+Publishing to PyPI (so `pip install verievals` works for everyone) is documented
+step-by-step in [`docs/RELEASING.md`](docs/RELEASING.md).
+
 ## Project status
 
 - **Stage:** working v0.1.0 — the cryptographic core, runner, ledger, verifier,
   SDK, trust leaderboard, CLI, and the GSM8K local-model MVP are complete and tested.
-- **Tests:** 202 passing · **coverage:** 97% · `mypy` and `ruff` clean · wheel builds.
+- **Tests:** 204 passing · **coverage:** 97% · `mypy` and `ruff` clean · wheel builds.
 - **Three foundational milestones delivered:**
   1. **MVP for a single open-source model** — `gemma3:1b` on a GSM8K sample via
      Ollama, with a fixture for offline reproduction (`llama3:8b` is one flag away).
