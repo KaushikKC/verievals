@@ -12,6 +12,9 @@
 [![Coverage](https://img.shields.io/badge/coverage-97%25-brightgreen.svg)](pyproject.toml)
 [![Typed](https://img.shields.io/badge/typed-mypy_strict-blue.svg)](pyproject.toml)
 
+**Watch the demo:** <https://youtu.be/RoJX8_gD_iI> — a short end-to-end walkthrough
+(run → sign → ledger → verify → tamper-fails → local model → trust leaderboard).
+
 ---
 
 ## Table of contents
