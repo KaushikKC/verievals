@@ -1,0 +1,9 @@
+id: gsm8k-full
+version: "test-1.0.0"
+scorer: gsm8k
+description: >
+  The official GSM8K test split (1,319 grade-school math word problems), fetched
+  from https://github.com/openai/grade-school-math (MIT License) and converted by
+  scripts/fetch_gsm8k.py. The prompt is the original question verbatim; the
+  expected value is the final number after the "####" marker. Scored by the gsm8k
+  scorer. Regenerate with: python scripts/fetch_gsm8k.py
