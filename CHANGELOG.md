@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Reusable GitHub Action (`.github/actions/verify`) that verifies eval records in
+  CI and fails the job on any non-verifying record; dogfooded by a demo workflow
+  and documented in `docs/github-action.md`.
+- Published to PyPI as `verievals` — README now carries a PyPI badge and the real
+  install instructions; CI/repo badges point at `KaushikKC/verievals`.
 - Integration guide (`docs/INTEGRATION.md`) and a runnable custom-model template
   (`examples/custom_model.py`) showing how to evaluate your own model in ~15 lines.
 - PyPI release guide (`docs/RELEASING.md`) and `build`/`twine` dev dependencies;
