@@ -107,15 +107,17 @@ def _cmd_leaderboard(args: argparse.Namespace) -> int:
         )
     else:
         board = build_leaderboard(store, ledger, benchmark_id=args.benchmark)
-    markdown = board.render_markdown()  # type: ignore[attr-defined]
+    render = board.render_html if args.format == "html" else board.render_markdown  # type: ignore[attr-defined]
+    output = render()
     entry_count = len(board.entries)  # type: ignore[attr-defined]
     if args.out:
         from pathlib import Path
 
-        Path(args.out).write_text(markdown, encoding="utf-8")
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(output, encoding="utf-8")
         print(f"Wrote leaderboard ({entry_count} entries) to {args.out}")
     else:
-        print(markdown, end="")
+        print(output, end="")
     return 0
 
 
@@ -160,7 +162,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_board.add_argument("--records", required=True, help="record store directory")
     p_board.add_argument("--ledger", required=True, help="ledger directory")
     p_board.add_argument("--benchmark", default=None, help="filter to a benchmark id")
-    p_board.add_argument("--out", default=None, help="write markdown to a file instead of stdout")
+    p_board.add_argument("--out", default=None, help="write to a file instead of stdout")
+    p_board.add_argument(
+        "--format",
+        choices=["md", "html"],
+        default="md",
+        help="output format (default: md)",
+    )
     p_board.add_argument(
         "--trust",
         action="store_true",
