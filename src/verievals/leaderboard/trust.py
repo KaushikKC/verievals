@@ -75,6 +75,37 @@ class TrustLeaderboard:
     entries: list[TrustEntry]
     generated_at: str
 
+    def render_html(self) -> str:
+        from verievals.leaderboard._html import e, render_page
+
+        head = (
+            "<tr><th>#</th><th>Trust</th><th>Score</th><th>Benchmark</th><th>Model</th>"
+            "<th>Accuracy</th><th>Tasks</th><th>Signer</th><th>Record</th></tr>"
+        )
+        rows = []
+        for i, en in enumerate(self.entries, start=1):
+            rows.append(
+                f"<tr><td>{i}</td>"
+                f'<td><span class="tier {en.tier.value}">{e(en.tier.value.replace("_", "-"))}'
+                f"</span></td>"
+                f"<td>{en.trust_score:.2f}</td>"
+                f"<td>{e(en.benchmark_id)}@{e(en.benchmark_version)}</td>"
+                f"<td>{e(en.model_provider)}:{e(en.model_name)}</td>"
+                f"<td>{en.accuracy:.3f}</td><td>{en.num_tasks}</td>"
+                f"<td>{e(en.signer or '—')}</td>"
+                f"<td><code>{e(en.record_id[:16])}…</code></td></tr>"
+            )
+        table = f"<table>{head}{''.join(rows)}</table>"
+        return render_page(
+            title="Verifiable Evals — Trust Score Leaderboard",
+            subtitle="Ranked by verification strength, then accuracy.",
+            root=self.root,
+            generated_at=self.generated_at,
+            entry_count=len(self.entries),
+            table_html=table,
+            show_legend=True,
+        )
+
     def render_markdown(self) -> str:
         emoji = {
             TrustTier.REPRODUCED: "🟢 reproduced",
