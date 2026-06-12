@@ -1,0 +1,68 @@
+name: pages
+
+# Builds the public, read-only Trust Score board and deploys it to GitHub Pages.
+# It runs two deterministic, offline evals (a captured gemma3:1b GSM8K fixture and
+# the echo arithmetic baseline), commits them to a ledger, and renders the trust
+# leaderboard to static HTML — so the published board is itself verifiable.
+#
+# One-time setup: repo Settings → Pages → Source = "GitHub Actions".
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e .
+
+      - name: Produce signed records (deterministic, offline)
+        run: |
+          verievals keygen --out keys/runner
+          # A real local-model run, replayed from the captured gemma3:1b fixture:
+          verievals run --benchmark benchmarks/gsm8k \
+            --model "fixture:examples/fixtures/gsm8k_gemma3_1b.json" \
+            --key keys/runner.key --out records --signer "gemma3:1b"
+          # The deterministic echo baseline:
+          verievals run --benchmark benchmarks/arithmetic --model echo \
+            --key keys/runner.key --out records --signer "echo-baseline"
+          for f in records/*.json; do verievals ledger --ledger ledger append "$f"; done
+
+      - name: Render the Trust Score board to static HTML
+        run: |
+          mkdir -p site
+          verievals leaderboard --records records --ledger ledger --trust \
+            --format html --out site/index.html \
+            --reproduce-benchmark benchmarks/gsm8k \
+            --reproduce-model "fixture:examples/fixtures/gsm8k_gemma3_1b.json"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
